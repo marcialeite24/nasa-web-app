@@ -28,7 +28,7 @@ export default function Header({onFetch}) {
 
     return (
         <div className="header">
-            <h1>Astronomy Picture of the Day Gallery</h1>
+            <h1 className="title">Astronomy Picture of the Day Gallery</h1>
             <div className="date-range">
                 <input className="start-date" type="date" value={startDate} onChange={handleStartDate}/>
                 <input className="end-date" type="date" value={endDate} onChange={handleEndDate}/>

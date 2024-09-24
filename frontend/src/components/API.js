@@ -2,7 +2,7 @@ import React from "react";
 
 export default function API({startDate,endDate}) {
     const [apodData, setApodData] = React.useState(null);
-    console.log(startDate)
+    const [imgHover, setImgHover] = React.useState(null);
 
     React.useEffect(() => {
         if (startDate && endDate) {
@@ -20,15 +20,27 @@ export default function API({startDate,endDate}) {
         }
     }, [startDate,endDate]);
 
+    const handleMouseEnter = (index) => {
+        setImgHover(index);
+    };
+
+    const handleMouseLeave = () => {
+        setImgHover(null);
+    };
+
     return (
-        <div className="api">            
+        <div className="api-container">            
             {apodData && (
-                apodData.map((item) => (
-                    <div className="api-card">                    
-                        <img src={item.url} alt={item.title}/>
-                        <h2>{item.title}</h2>
+                apodData.map((item, index) => (
+                    <div key={index} className="api-card">                    
+                        <img src={item.url} alt={item.title} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}/>
+                        {imgHover === index && (
+                            <p className="tooltip">{item.title}</p>
+                            // <p className="tooltip">{item.date}</p>
+                        )}
+                        {/* <h2>{item.title}</h2>
                         <p>{item.explanation}</p>                    
-                        <p>{item.date}</p>
+                        <p>{item.date}</p> */}
                     </div>
                 ))                
             )}
