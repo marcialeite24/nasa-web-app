@@ -1,9 +1,37 @@
 body {
     background-color: black;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
 .header{
     color: white;
+    text-align: center;
+    padding: 1em 2em;
+}
+
+
+.date-range {
+    text-align: center;
+}
+
+.start-date, .end-date {
+    margin: 0.2em 0.5em;
+    padding: 0.5em;
+}
+
+.btn-fetch-data {
+    border: none;
+    border-radius: 5px;
+    width: 10em;
+    height: 2.5em;
+    font-weight: bold;
+    margin-top: 1em;
+}
+
+.date-error {
+    color: red;
+    font-weight: bold;
+    text-align: center;
 }
 
 .api {
