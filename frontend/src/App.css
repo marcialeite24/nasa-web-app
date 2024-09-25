@@ -137,15 +137,15 @@ body {
 }
 
 .modal-info {
-    padding: 0 10px;
+    padding: 0 25px;
 }
 
 .modal-info .title {
-    font-size: 0.9em;
+    font-size: 0.8em;
 }
 
 .modal-info .explanation { 
-    font-size: 0.7em;
+    font-size: 0.65em;
 }
 
 .modal-info .date {
@@ -162,6 +162,19 @@ body {
     color: #e3e0e0;
 }
 
+.next-img {
+    right: 0;
+}
+
+.previous-img, .next-img {
+    border: none;
+    background: none;
+    font-size: 20px;
+    font-weight: bold;
+    position: absolute;
+    top: 50%;
+}
+
 @media only screen and (min-width: 768px) {
     .modal-content {
         max-width: 80%;
@@ -169,6 +182,12 @@ body {
     }
     .modal-content img {
         height: 300px;
+    }
+    .modal-info {
+        padding: 0 10px;
+    }
+    .previous-img, .next-img {        
+        color: white;
     }
 }
 
@@ -198,5 +217,12 @@ body {
     .modal-close {
         color: #0e0d0d;
         font-size: 30px;
+    }
+    .previous-img {
+        position: absolute;
+        color: white;
+    }    
+    .previous-img, .next-img {
+        font-size: 40px;
     }
 }

@@ -31,14 +31,22 @@ export default function API({startDate,endDate}) {
         setImgHover(null);
     };
 
-    const handleClick = (item) => {
-        setSelectedImg(item);
+    const handleClick = (index) => {
+        setSelectedImg(index);
         setModalOpen(true);
     };
 
     const handleCloseModal = (item) => {
         setSelectedImg(null);
         setModalOpen(false);
+    };
+
+    const handlePreviousImg = () => {
+        setSelectedImg((prevIndex) => (prevIndex - 1 + apodData.length) % apodData.length);
+    };
+
+    const handleNextImg = () => {
+        setSelectedImg((prevIndex) => (prevIndex + 1) % apodData.length);
     };
 
     return (
@@ -53,7 +61,7 @@ export default function API({startDate,endDate}) {
                             alt={item.title}
                             onMouseEnter={() => handleMouseEnter(index)}
                             onMouseLeave={handleMouseLeave}
-                            onClick={() => handleClick(item)} />
+                            onClick={() => handleClick(index)} />
                         {imgHover === index && (
                             <p className="tooltip">{item.title}</p>
                             // <p className="tooltip">{item.date}</p>
@@ -61,11 +69,13 @@ export default function API({startDate,endDate}) {
                     </div>
                 ))                
             )}
-            {modalOpen && (
+            {modalOpen && selectedImg !== null && (
                 <Modal 
                 show={modalOpen}
-                imageData={selectedImg}
-                onClose={handleCloseModal}/>
+                imageData={apodData[selectedImg]}
+                onClose={handleCloseModal}
+                onPrevious={handlePreviousImg}
+                onNext={handleNextImg} />
             )}
         </div>
     )
