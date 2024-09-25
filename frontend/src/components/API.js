@@ -9,7 +9,7 @@ export default function API({startDate,endDate}) {
 
     React.useEffect(() => {
         if (startDate && endDate) {
-            fetch(`https://api.nasa.gov/planetary/apod?api_key=Nf3BTHKGGaLaPaAa2ohIVnH40YLXyfNZcqPhK1so&start_date=${startDate}&end_date=${endDate}`)
+            fetch(`http://localhost:5000/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
                 return res.json();
             })
@@ -57,13 +57,15 @@ export default function API({startDate,endDate}) {
                         {imgHover === index && (
                             <p className="tooltip">{item.title}</p>
                             // <p className="tooltip">{item.date}</p>
-                        )}
-                        <Modal 
-                            show={modalOpen}
-                            imageData={selectedImg}
-                            onClose={handleCloseModal}/>
+                        )}                        
                     </div>
                 ))                
+            )}
+            {modalOpen && (
+                <Modal 
+                show={modalOpen}
+                imageData={selectedImg}
+                onClose={handleCloseModal}/>
             )}
         </div>
     )
