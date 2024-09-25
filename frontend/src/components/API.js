@@ -1,8 +1,11 @@
 import React from "react";
+import Modal from './Modal';
 
 export default function API({startDate,endDate}) {
     const [apodData, setApodData] = React.useState(null);
     const [imgHover, setImgHover] = React.useState(null);
+    const [selectedImg, setSelectedImg] = React.useState(null);
+    const [modalOpen, setModalOpen] = React.useState(false);
 
     React.useEffect(() => {
         if (startDate && endDate) {
@@ -28,19 +31,37 @@ export default function API({startDate,endDate}) {
         setImgHover(null);
     };
 
+    const handleClick = (item) => {
+        setSelectedImg(item);
+        setModalOpen(true);
+    };
+
+    const handleCloseModal = (item) => {
+        setSelectedImg(null);
+        setModalOpen(false);
+    };
+
     return (
         <div className="api-container">            
             {apodData && (
                 apodData.map((item, index) => (
-                    <div key={index} className="api-card">                    
-                        <img src={item.url} alt={item.title} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave}/>
+                    <div 
+                        key={index} 
+                        className="api-card">  
+                        <img 
+                            src={item.url} 
+                            alt={item.title}
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={handleMouseLeave}
+                            onClick={() => handleClick(item)} />
                         {imgHover === index && (
                             <p className="tooltip">{item.title}</p>
                             // <p className="tooltip">{item.date}</p>
                         )}
-                        {/* <h2>{item.title}</h2>
-                        <p>{item.explanation}</p>                    
-                        <p>{item.date}</p> */}
+                        <Modal 
+                            show={modalOpen}
+                            imageData={selectedImg}
+                            onClose={handleCloseModal}/>
                     </div>
                 ))                
             )}
