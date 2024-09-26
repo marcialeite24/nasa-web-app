@@ -39,7 +39,7 @@ body {
     grid-template-columns: 10rem 10rem;
     grid-gap: 1rem;
     height: 150px;
-    margin: 2rem 0;    
+    margin: 0.7rem 0;    
 }
 
 .api-card {
@@ -91,6 +91,20 @@ body {
     .api-card, .api-card img {
         height: 250px;
     }
+}
+
+.search-filter {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5em;
+}
+
+.search-filter label {
+    padding: 0 5px;
 }
 
 .tooltip {
@@ -192,6 +206,9 @@ body {
 }
 
 @media only screen and (min-width: 1200px) {
+    .search-filter {
+        font-size: 1.1em;
+    }
     .modal-content {
         display: flex;
         flex-direction: row;
@@ -206,7 +223,7 @@ body {
         border-radius: 10px 0 0 10px;
     }
     .modal-info {
-        padding: 0 20px;
+        padding: 0 25px;
     }
     .modal-info .title {
         font-size: 1.4em;
@@ -221,8 +238,11 @@ body {
     .previous-img {
         position: absolute;
         color: white;
-    }    
+    }   
+    .next-img {
+        color: black;
+    } 
     .previous-img, .next-img {
-        font-size: 40px;
+        font-size: 30px;
     }
 }

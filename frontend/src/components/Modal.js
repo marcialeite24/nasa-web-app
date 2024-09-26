@@ -1,13 +1,13 @@
 import React from "react";
 
-export default function API({show,onClose,imageData,onPrevious,onNext}) {
+export default function API({show,onClose,imageData,onPrevious,onNext,filteredData}) {
     if(!show) return null;
 
     return (
         <div className="modal">
             <div className="modal-content">
                 <span className="modal-close" onClick={onClose}>&times;</span>
-                <button onClick={onPrevious} className="previous-img">&lt;</button>
+                {filteredData.length > 1 && (<button onClick={onPrevious} className="previous-img">&lt;</button>)}
                 <img 
                     src={imageData.url} 
                     alt={imageData.title} />
@@ -16,7 +16,7 @@ export default function API({show,onClose,imageData,onPrevious,onNext}) {
                     <p className="explanation">{imageData.explanation}</p>                    
                     <p className="date">{imageData.date}</p>
                 </div>
-                <button onClick={onNext} className="next-img">&gt;</button>
+                {filteredData.length > 1 && (<button onClick={onNext} className="next-img">&gt;</button>)}
             </div>
         </div>
     )

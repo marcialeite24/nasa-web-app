@@ -1,4 +1,5 @@
 import React from "react";
+import Search from "./Search";
 import Modal from './Modal';
 
 export default function API({startDate,endDate}) {
@@ -6,16 +7,21 @@ export default function API({startDate,endDate}) {
     const [imgHover, setImgHover] = React.useState(null);
     const [selectedImg, setSelectedImg] = React.useState(null);
     const [modalOpen, setModalOpen] = React.useState(false);
+    const [filteredData, setFilteredData] = React.useState(null);
+    const [resetFilters, setResetFilters] = React.useState(false);
 
     React.useEffect(() => {
         if (startDate && endDate) {
+            setResetFilters(true);
+            
             fetch(`http://localhost:5000/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
                 return res.json();
             })
             .then((data) => {
                 setApodData(data);
-                console.log(data);
+                setFilteredData(data);
+                setResetFilters(false);
             })
             .catch((error) => {
                 console.log('Error fetching data:', error);
@@ -31,52 +37,73 @@ export default function API({startDate,endDate}) {
         setImgHover(null);
     };
 
-    const handleClick = (index) => {
-        setSelectedImg(index);
+    const handleClick = (item) => {
+        setSelectedImg(item);
         setModalOpen(true);
     };
 
-    const handleCloseModal = (item) => {
+    const handleCloseModal = () => {
         setSelectedImg(null);
         setModalOpen(false);
     };
 
     const handlePreviousImg = () => {
-        setSelectedImg((prevIndex) => (prevIndex - 1 + apodData.length) % apodData.length);
+        const currentIndex = filteredData.findIndex(image => image.title === selectedImg.title);
+        if (currentIndex !== -1) {
+            const previousIndex = (currentIndex - 1 + filteredData.length) % filteredData.length;
+            setSelectedImg(filteredData[previousIndex]);
+        }
     };
 
     const handleNextImg = () => {
-        setSelectedImg((prevIndex) => (prevIndex + 1) % apodData.length);
+        const currentIndex = filteredData.findIndex(image => image.title === selectedImg.title);
+        if (currentIndex !== -1) {
+            const nextIndex = (currentIndex + 1) % filteredData.length;
+            setSelectedImg(filteredData[nextIndex]);
+        }
+    };
+
+    const updateFilteredData = (newFilteredData) => {
+        setFilteredData(newFilteredData);
     };
 
     return (
-        <div className="api-container">            
-            {apodData && (
-                apodData.map((item, index) => (
-                    <div 
-                        key={index} 
-                        className="api-card">  
-                        <img 
-                            src={item.url} 
-                            alt={item.title}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                            onClick={() => handleClick(index)} />
-                        {imgHover === index && (
-                            <p className="tooltip">{item.title}</p>
-                            // <p className="tooltip">{item.date}</p>
-                        )}                        
-                    </div>
-                ))                
-            )}
-            {modalOpen && selectedImg !== null && (
-                <Modal 
-                show={modalOpen}
-                imageData={apodData[selectedImg]}
-                onClose={handleCloseModal}
-                onPrevious={handlePreviousImg}
-                onNext={handleNextImg} />
-            )}
+        <div>
+            {filteredData && (
+                <Search 
+                    data={apodData} 
+                    onFilter={updateFilteredData} 
+                    onReset={resetFilters}
+                />
+            )} 
+            <div className="api-container">                     
+                {filteredData && (
+                    filteredData.map((item, index) => (
+                        <div 
+                            key={index} 
+                            className="api-card">  
+                            <img 
+                                src={item.url} 
+                                alt={item.title}
+                                onMouseEnter={() => handleMouseEnter(index)}
+                                onMouseLeave={handleMouseLeave}
+                                onClick={() => handleClick(item)} />
+                            {imgHover === index && (
+                                <p className="tooltip">{item.title}</p>
+                            )}                        
+                        </div>
+                    ))                
+                )}
+                {modalOpen && selectedImg !== null && (
+                    <Modal 
+                    show={modalOpen}
+                    imageData={selectedImg}
+                    onClose={handleCloseModal}
+                    onPrevious={handlePreviousImg}
+                    onNext={handleNextImg} 
+                    filteredData={filteredData}/>
+                )}
+            </div>
         </div>
     )
 };
