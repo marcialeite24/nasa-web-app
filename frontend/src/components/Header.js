@@ -33,8 +33,8 @@ export default function Header({onFetch}) {
         <div className="header">
             <h1 className="title">Astronomy Picture of the Day Gallery</h1>
             <div className="date-range">
-                <input className="start-date" type="date" value={startDate} onChange={handleStartDate}/>
-                <input className="end-date" type="date" value={endDate} onChange={handleEndDate}/>
+                <input className="start-date" type="date" value={startDate} onChange={handleStartDate} aria-label="start-date"/>
+                <input className="end-date" type="date" value={endDate} onChange={handleEndDate} aria-label="end-date"/>
                 <button className="btn-fetch-data" onClick={handleFetch}>Fetch Data</button>
             </div>
             {dateError && (<p className="date-error">{dateError}</p>)}        
