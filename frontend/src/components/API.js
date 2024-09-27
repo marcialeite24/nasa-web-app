@@ -14,6 +14,8 @@ export default function API({startDate,endDate}) {
     React.useEffect(() => {
         if (startDate && endDate) {
             setResetFilters(true);
+            console.log('Backend URL:', backendURL);
+
             
             fetch(`${backendURL}/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
