@@ -1,7 +1,7 @@
 import React from "react";
 import Search from "./Search";
 import Modal from './Modal';
-const backendURL = process.env.BACKEND_URL;
+const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 export default function API({startDate,endDate}) {
     const [apodData, setApodData] = React.useState(null);
