@@ -9,12 +9,13 @@ export default function API({startDate,endDate}) {
     const [modalOpen, setModalOpen] = React.useState(false);
     const [filteredData, setFilteredData] = React.useState(null);
     const [resetFilters, setResetFilters] = React.useState(false);
+    const backendURL = process.env.BACKEND_URL;
 
     React.useEffect(() => {
         if (startDate && endDate) {
             setResetFilters(true);
             
-            fetch(`http://localhost:5000/apod?start_date=${startDate}&end_date=${endDate}`)
+            fetch(`${backendURL}/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
                 return res.json();
             })
