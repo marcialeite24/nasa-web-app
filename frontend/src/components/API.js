@@ -1,6 +1,7 @@
 import React from "react";
 import Search from "./Search";
 import Modal from './Modal';
+const backendURL = process.env.BACKEND_URL;
 
 export default function API({startDate,endDate}) {
     const [apodData, setApodData] = React.useState(null);
@@ -9,7 +10,6 @@ export default function API({startDate,endDate}) {
     const [modalOpen, setModalOpen] = React.useState(false);
     const [filteredData, setFilteredData] = React.useState(null);
     const [resetFilters, setResetFilters] = React.useState(false);
-    const backendURL = process.env.BACKEND_URL;
 
     React.useEffect(() => {
         if (startDate && endDate) {
