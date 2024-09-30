@@ -2,9 +2,11 @@ import React from "react";
 import Search from "./Search";
 import Modal from './Modal';
 import { useSwipeable } from 'react-swipeable';
+import { JellyfishSpinner } from "react-spinners-kit";
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 export default function API({startDate,endDate}) {
+    const [loading, setLoading] = React.useState(false);
     const [apodData, setApodData] = React.useState(null);
     const [imgHover, setImgHover] = React.useState(null);
     const [selectedImg, setSelectedImg] = React.useState(null);
@@ -24,6 +26,7 @@ export default function API({startDate,endDate}) {
     React.useEffect(() => {
         if (startDate && endDate) {
             setResetFilters(true);
+            setLoading(true);
             
             fetch(`${backendURL}/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
@@ -31,12 +34,14 @@ export default function API({startDate,endDate}) {
             })
             .then((data) => {
                 setApodData(data);
+                setLoading(false);
                 setFilteredData(data);
                 setResetFilters(false);
                 sessionStorage.setItem('apodData', JSON.stringify(data));
             })
             .catch((error) => {
                 console.log('Error fetching data:', error);
+                setLoading(false);
             })
         }
     }, [startDate,endDate]);
@@ -84,10 +89,19 @@ export default function API({startDate,endDate}) {
         onSwipedRight: handlePreviousImg,
         preventDefaultTouchmoveEvent: true,
         trackMouse: true
-      });
+    });
+
+    React.useEffect(() => {
+        if (modalOpen) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
+    }, [modalOpen]);
 
     return (
-        <div>
+        <div> 
+            {loading && <JellyfishSpinner />}          
             {filteredData && (
                 <Search 
                     data={apodData} 

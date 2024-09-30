@@ -5,6 +5,10 @@ body {
     font-family: 'Lucida Sans', sans-serif;
 }
 
+.no-scroll {
+    overflow: hidden;
+}
+
 .header{
     text-align: center;
     padding: 1em 2em;

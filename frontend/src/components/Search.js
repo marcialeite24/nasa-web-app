@@ -12,6 +12,22 @@ export default function Search({data,onFilter,onReset}) {
         Exploration: ["exploration", "mission", "launch", "discovery", "telescope", "apollo 11", "robot"]
     };
     const [selectedCategories, setSelectedCategories] = React.useState([]);
+    const [isInitialLoad, setIsInitialLoad] = React.useState(true);
+
+    React.useEffect(() => {
+        const storedFilters = JSON.parse(sessionStorage.getItem('selectedCategories'));
+        if (storedFilters) {
+            setSelectedCategories(storedFilters);
+            filterData(storedFilters);
+        }
+        setIsInitialLoad(false);
+    }, []);
+
+    React.useEffect(() => {
+        if(!isInitialLoad) {
+            sessionStorage.setItem('selectedCategories', JSON.stringify(selectedCategories));
+        }
+    }, [selectedCategories,isInitialLoad]);
 
     React.useEffect(() => {
         if(onReset) {

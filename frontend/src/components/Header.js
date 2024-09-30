@@ -5,6 +5,20 @@ export default function Header({onFetch}) {
     const [endDate, setEndDate] = React.useState('');
     const [dateError, setDateError] = React.useState('');
 
+    React.useEffect(() => {
+        const storedStartDate = JSON.parse(sessionStorage.getItem('startDate'));
+        const storedEndDate = JSON.parse(sessionStorage.getItem('endDate'));
+        if (storedStartDate && storedEndDate) {
+            setStartDate(storedStartDate);
+            setEndDate(storedEndDate);
+        }
+    }, []);
+
+    React.useEffect(() => {
+        sessionStorage.setItem('startDate', JSON.stringify(startDate));
+        sessionStorage.setItem('endDate', JSON.stringify(endDate));
+    }, [startDate,endDate]);
+
     const handleStartDate = (e) => {
         setStartDate(e.target.value);
     };
@@ -35,7 +49,7 @@ export default function Header({onFetch}) {
             <div className="date-range">
                 <input className="start-date" type="date" value={startDate} onChange={handleStartDate} aria-label="start-date"/>
                 <input className="end-date" type="date" value={endDate} onChange={handleEndDate} aria-label="end-date"/>
-                <button className="btn-fetch-data" onClick={handleFetch}>Fetch Data</button>
+                <button className="btn-fetch-data" onClick={handleFetch}>Fetch Data</button> 
             </div>
             {dateError && (<p className="date-error">{dateError}</p>)}        
         </div>
