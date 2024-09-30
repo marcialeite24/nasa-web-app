@@ -45,6 +45,6 @@ To run the project locally, follow these steps:
 
 ## Usage
 - Enter a date range in the specified input fields (Start date must be before end date and end date must be today or earlier). 
-- Click the "Fetch Data" button to retrieve the images based on your criteria.
+- Click the "Fetch Data" button to retrieve the images based on your date range selection.
 - Select the desired filters using the checkboxes.
 - Hover over images to see their titles displayed for quick information (only available on desktop), and click on an image to view additional details (title, explanation, date).

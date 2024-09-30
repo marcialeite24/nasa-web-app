@@ -38,6 +38,12 @@ body {
     text-align: center;
 }
 
+.spinner {
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+
 .api-container {
     display: grid;
     justify-content: center;

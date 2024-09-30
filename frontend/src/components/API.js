@@ -101,43 +101,50 @@ export default function API({startDate,endDate}) {
 
     return (
         <div> 
-            {loading && <JellyfishSpinner />}          
-            {filteredData && (
-                <Search 
-                    data={apodData} 
-                    onFilter={updateFilteredData} 
-                    onReset={resetFilters}
-                />
-            )} 
-            <div className="api-container">                     
-                {filteredData && (
-                    filteredData.map((item, index) => (
-                        <div 
-                            key={index} 
-                            className="api-card">  
-                            <img 
-                                src={item.url} 
-                                alt={item.title}
-                                onMouseEnter={() => handleMouseEnter(index)}
-                                onMouseLeave={handleMouseLeave}
-                                onClick={() => handleClick(item)} />
-                            {imgHover === index && (
-                                <p className="tooltip">{item.title}</p>
-                            )}                        
-                        </div>
-                    ))                
-                )}
-                {modalOpen && selectedImg !== null && (
-                    <Modal 
-                    show={modalOpen}
-                    imageData={selectedImg}
-                    onClose={handleCloseModal}
-                    onPrevious={handlePreviousImg}
-                    onNext={handleNextImg} 
-                    filteredData={filteredData}
-                    swipe={swipe}/>
-                )}
-            </div>
+            {loading && 
+                <div className="spinner">
+                    <JellyfishSpinner size={120} />
+                </div>
+            }       
+            {!loading && filteredData && (
+                <>
+                    <Search 
+                        data={apodData} 
+                        onFilter={updateFilteredData} 
+                        onReset={resetFilters}
+                    />                            
+                    <div className="api-container">                     
+                        {filteredData && (
+                            filteredData.map((item, index) => (
+                                <div 
+                                    key={index} 
+                                    className="api-card">  
+                                    <img 
+                                        src={item.url} 
+                                        alt={item.title}
+                                        onMouseEnter={() => handleMouseEnter(index)}
+                                        onMouseLeave={handleMouseLeave}
+                                        onClick={() => handleClick(item)} />
+                                    {imgHover === index && (
+                                        <p className="tooltip">{item.title}</p>
+                                    )}                        
+                                </div>
+                            ))                
+                        )}
+                        {modalOpen && selectedImg !== null && (
+                            <Modal 
+                            show={modalOpen}
+                            imageData={selectedImg}
+                            onClose={handleCloseModal}
+                            onPrevious={handlePreviousImg}
+                            onNext={handleNextImg} 
+                            filteredData={filteredData}
+                            swipe={swipe}/>
+                        )}
+                    </div>
+                
+                </>
+            )}
         </div>
     )
 };
