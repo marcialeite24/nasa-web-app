@@ -1,6 +1,7 @@
 import React from "react";
 import Search from "./Search";
 import Modal from './Modal';
+import { useSwipeable } from 'react-swipeable';
 const backendURL = process.env.REACT_APP_BACKEND_URL;
 
 export default function API({startDate,endDate}) {
@@ -12,10 +13,17 @@ export default function API({startDate,endDate}) {
     const [resetFilters, setResetFilters] = React.useState(false);
 
     React.useEffect(() => {
+        const storedData = sessionStorage.getItem('apodData');
+        if (storedData) {
+            const parsedData = JSON.parse(storedData);
+            setApodData(parsedData);
+            setFilteredData(parsedData);
+        }
+    }, []);
+
+    React.useEffect(() => {
         if (startDate && endDate) {
             setResetFilters(true);
-            console.log('Backend URL:', backendURL);
-
             
             fetch(`${backendURL}/apod?start_date=${startDate}&end_date=${endDate}`)
             .then((res) => {
@@ -25,6 +33,7 @@ export default function API({startDate,endDate}) {
                 setApodData(data);
                 setFilteredData(data);
                 setResetFilters(false);
+                sessionStorage.setItem('apodData', JSON.stringify(data));
             })
             .catch((error) => {
                 console.log('Error fetching data:', error);
@@ -70,6 +79,13 @@ export default function API({startDate,endDate}) {
         setFilteredData(newFilteredData);
     };
 
+    const swipe = useSwipeable({
+        onSwipedLeft: handleNextImg,
+        onSwipedRight: handlePreviousImg,
+        preventDefaultTouchmoveEvent: true,
+        trackMouse: true
+      });
+
     return (
         <div>
             {filteredData && (
@@ -104,7 +120,8 @@ export default function API({startDate,endDate}) {
                     onClose={handleCloseModal}
                     onPrevious={handlePreviousImg}
                     onNext={handleNextImg} 
-                    filteredData={filteredData}/>
+                    filteredData={filteredData}
+                    swipe={swipe}/>
                 )}
             </div>
         </div>

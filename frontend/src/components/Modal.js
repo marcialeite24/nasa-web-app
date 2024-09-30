@@ -1,10 +1,10 @@
 import React from "react";
 
-export default function API({show,onClose,imageData,onPrevious,onNext,filteredData}) {
+export default function API({show,onClose,imageData,onPrevious,onNext,filteredData,swipe}) {
     if(!show) return null;
 
     return (
-        <div className="modal">
+        <div className="modal" {...swipe}>
             <div className="modal-content">
                 <span className="modal-close" onClick={onClose}>&times;</span>
                 {filteredData.length > 1 && (<button onClick={onPrevious} className="previous-img">&lt;</button>)}
