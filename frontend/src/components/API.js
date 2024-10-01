@@ -23,26 +23,43 @@ export default function API({startDate,endDate}) {
         }
     }, []);
 
+    const fetchApodData = async (startDate, endDate) => {
+        const oneMonth = 30 * 24 * 60 * 60 * 1000;
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+        let currentStart = start;
+        let allData = [];
+
+        while (currentStart <= end) {
+            var currentEnd = new Date(currentStart.getTime() + oneMonth);
+            if (currentEnd > end) {
+                currentEnd = end;
+            }
+            const response = await fetch(`${backendURL}/apod?start_date=${currentStart.toISOString().split('T')[0]}&end_date=${currentEnd.toISOString().split('T')[0]}`);
+            const data = await response.json();
+            allData = allData.concat(data);
+            currentStart = new Date(currentEnd.getTime() + 1); 
+        }
+        return allData;
+    };
+
     React.useEffect(() => {
         if (startDate && endDate) {
             setResetFilters(true);
             setLoading(true);
             
-            fetch(`${backendURL}/apod?start_date=${startDate}&end_date=${endDate}`)
-            .then((res) => {
-                return res.json();
-            })
-            .then((data) => {
-                setApodData(data);
-                setLoading(false);
-                setFilteredData(data);
-                setResetFilters(false);
-                sessionStorage.setItem('apodData', JSON.stringify(data));
-            })
-            .catch((error) => {
-                console.log('Error fetching data:', error);
-                setLoading(false);
-            })
+            fetchApodData(startDate,endDate)
+                .then((data) => {
+                    setApodData(data);
+                    setLoading(false);
+                    setFilteredData(data);
+                    setResetFilters(false);
+                    sessionStorage.setItem('apodData', JSON.stringify(data));
+                })
+                .catch((error) => {
+                    console.log('Error fetching data:', error);
+                    setLoading(false);
+                })
         }
     }, [startDate,endDate]);
 
