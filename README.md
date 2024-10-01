@@ -12,6 +12,8 @@ The Nasa Web App is a web application that uses the NASA Astronomy Picture of th
 ## Demo
 A live demo can be seen using this [link](https://nasa-web-app.vercel.app/).
 
+![Live Demo](./frontend/public/assets/liveDemo.mkv)
+
 ## Features
 - Fetch and display images from the NASA APOD API based on user-defined date ranges.
 - Responsive design suitable for desktop, tablet and mobile devices.
