@@ -3,7 +3,7 @@ import Search from "./Search";
 import Modal from './Modal';
 import { useSwipeable } from 'react-swipeable';
 import { JellyfishSpinner } from "react-spinners-kit";
-const backendURL = process.env.REACT_APP_BACKEND_URL;
+const backendURL = process.env.REACT_APP_BACKEND_URL || 'http://localhost:5000';
 
 export default function API({startDate,endDate}) {
     const [loading, setLoading] = React.useState(false);
@@ -118,13 +118,28 @@ export default function API({startDate,endDate}) {
                             filteredData.map((item, index) => (
                                 <div 
                                     key={index} 
-                                    className="api-card">  
-                                    <img 
-                                        src={item.url} 
-                                        alt={item.title}
-                                        onMouseEnter={() => handleMouseEnter(index)}
-                                        onMouseLeave={handleMouseLeave}
-                                        onClick={() => handleClick(item)} />
+                                    className="api-card"
+                                    onClick={() => handleClick(item)}>  
+                                    {item.media_type === 'video' ? (
+                                        <div onMouseEnter={() => handleMouseEnter(index)}
+                                        onMouseLeave={handleMouseLeave}>
+                                            <iframe
+                                                width="100%"
+                                                height="auto"
+                                                src={item.url}
+                                                title={item.title}
+                                                allowFullScreen  
+                                                style={{ pointerEvents: 'none' }}
+                                            ></iframe>
+                                        </div>
+                                    ):(
+                                        <img 
+                                            src={item.url} 
+                                            alt={item.title}
+                                            onMouseEnter={() => handleMouseEnter(index)}
+                                            onMouseLeave={handleMouseLeave}             
+                                        />
+                                    )}                                    
                                     {imgHover === index && (
                                         <p className="tooltip">{item.title}</p>
                                     )}                        

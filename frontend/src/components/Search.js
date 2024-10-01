@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function Search({data,onFilter,onReset}) {
-    const categories = {
+    const categories = React.useMemo(() => ({
         Astronomy: ["astronomy", "cosmos", "universe", "celestial", "aurora", "night", "sky", "fog bow", "storm cloud", "arcs", "gamma-ray", "shadowset", "spiral", "clouds"],
         Planets: ["planet", "planets", "earth", "mars", "jupiter", "saturn", "venus", "neptune", "uranus", "mercury", "exoplanet", "moon"],
         Stars: ["star", "stars", "supernova", "nova", "pulsar", "black hole", "neutron star", "red giant", "sun", "equinox", "solar", "cluster"],
@@ -10,18 +10,9 @@ export default function Search({data,onFilter,onReset}) {
         Spacecraft: ["spacecraft", "satellite", "probe", "lander", "rover", "space station"],
         Asteroids: ["asteroid", "asteroids", "comet", "comets", "meteor", "meteoroid", "perseid"],
         Exploration: ["exploration", "mission", "launch", "discovery", "telescope", "apollo 11", "robot"]
-    };
+    }), []);
     const [selectedCategories, setSelectedCategories] = React.useState([]);
     const [isInitialLoad, setIsInitialLoad] = React.useState(true);
-
-    React.useEffect(() => {
-        const storedFilters = JSON.parse(sessionStorage.getItem('selectedCategories'));
-        if (storedFilters) {
-            setSelectedCategories(storedFilters);
-            filterData(storedFilters);
-        }
-        setIsInitialLoad(false);
-    }, []);
 
     React.useEffect(() => {
         if(!isInitialLoad) {
@@ -36,7 +27,7 @@ export default function Search({data,onFilter,onReset}) {
         }
     }, [data, onFilter, onReset]);
 
-    const filterData = (categoriesSelected) => {
+    const filterData = React.useCallback((categoriesSelected) => {
         if(!data) return;
         if(categoriesSelected.length === 0) {
             onFilter(data);
@@ -55,7 +46,7 @@ export default function Search({data,onFilter,onReset}) {
             }
         }
         onFilter(filtered);
-    };
+    }, [data,onFilter,categories]);
 
     const handleChange = (category) => {
         const updatedCategories = selectedCategories.includes(category) 
@@ -82,6 +73,15 @@ export default function Search({data,onFilter,onReset}) {
     };
 
     const availableCategories = getAvailableCategories();
+
+    React.useEffect(() => {
+        const storedFilters = JSON.parse(sessionStorage.getItem('selectedCategories'));
+        if (storedFilters) {
+            setSelectedCategories(storedFilters);
+            filterData(storedFilters);
+        }
+        setIsInitialLoad(false);
+    }, [filterData]);
 
     return (
         <div className="search-filter">
