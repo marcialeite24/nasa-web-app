@@ -31,7 +31,7 @@ export default function API({startDate,endDate}) {
         let allData = [];
 
         while (currentStart <= end) {
-            var currentEnd = new Date(currentStart.getTime() + oneMonth);
+            var currentEnd = new Date(currentStart.getTime() + oneMonth - 1);
             if (currentEnd > end) {
                 currentEnd = end;
             }
